@@ -14,8 +14,8 @@ import Countries from './components/Countries'
 export default {
   name: 'App',
   components: {
-    Header,
-    Countries
+    Countries,
+    Header
   }
 }
 </script>
