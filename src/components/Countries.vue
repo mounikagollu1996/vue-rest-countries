@@ -2,7 +2,7 @@
     <div class="container">
         <div class="main-wrapper">
             <div class="country-wrapper" v-for="country in countries" :key="country.name">
-                <router-link :to="{name: '/country/countryId', params: {countryId: country.name}}" >
+                <router-link :to="{name: '/country/countryId', params: {countryId: country.name}}">
                     <img class="flag" :src="country.flag">
                     <h4>{{ country.name}}</h4>
                     <p>Population: {{ country.population }}</p>
@@ -20,9 +20,9 @@ export default {
     data() {
         return {
             countries: [],
-            isCountrySelected: false
         }
     },
+
     mounted() {
         this.$http.get('https://restcountries.eu/rest/v2/all')
         .then( function(res) {

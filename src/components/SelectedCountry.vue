@@ -1,22 +1,35 @@
 <template>
 <div class="container">    
-            <div class="column-main" v-for="country in selectedCountry" :key="country.name">
+            <div class="column-main">
                 <div class="image-box">
-                    <img :src="country.flag" alt="country flag"/>
+                    <img :src="selectedCountry.flag" alt="country flag"/>
                 </div>
                 <div class="description">
                     <div class="content">
                         <div class="wrapper">
-                            <h4>{{country.name}}</h4>
-                            <p class="">Native Name: {{country.nativeName}}</p>
-                            <p class="">Population: {{country.population}}</p>
-                            <p class="">Region: {{country.region}}</p>
-                            <p class="">Sub Region: {{country.subRegion}}</p>
-                            <p class="">Capital: {{country.capital}}</p>
+                            <h4>{{selectedCountry.name}}</h4>
+                            <p class="">Native Name: {{selectedCountry.nativeName}}</p>
+                            <p class="">Population: {{selectedCountry.population}}</p>
+                            <p class="">Region: {{selectedCountry.region}}</p>
+                            <p class="">Sub Region: {{selectedCountry.subRegion}}</p>
+                            <p class="">Capital: {{selectedCountry.capital}}</p>
                         </div>
                         <div class="">
-                            <p class="">Top Level Domain: {{country.topLevelDomain}}</p>
-                            <p class="">Currencies: {{country.currencies[0].code}}</p>
+                            <p class="">Top Level Domain: {{selectedCountry.topLevelDomain}}</p>
+                            <p class="">Currencies: {{currencyCode}}</p>
+                            <div class="lang">
+                                Languages: 
+                                <p v-for="lang in selectedCountry.languages" :key="lang.name">
+                                 {{lang.name}}
+                            </p>
+                            </div>
+                            <div class="borders">
+                                <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
+                                    <router-link :to="{name: '/country/countryId', params: {countryId: borderCountry}}">
+                                        {{border}}
+                                    </router-link> 
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -30,23 +43,46 @@ export default {
     data() {
         return {
             countryId: this.$route.params.countryId,
-            selectedCountry: []
+            selectedCountry: [],
+            currencyCode: '',
+            borderCountry: ''
         }
     },
+    
+    methods: {
+       updateCountry(border) {
+           var _this = this;
+           _this.$http.get('https://restcountries.eu/rest/v2/all')
+           .then(function(res) {
+               res.body.filter(country => {
+                   if(country.alpha3Code === border)
+                   {
+                       _this.selectedCountry = country;
+                       this.currencyCode = country.currencies[0].code;
+                       _this.borderCountry = country.name
+                   }
+               })
+               console.log(this.borderCountry);
+           })
+       }
+    },
+
     mounted() {
+        console.log(this.countryId);
         this.$http.get('https://restcountries.eu/rest/v2/name/{name}',{
             params: {
                 name: `${this.countryId}`
             }
         })
         .then(function(res) {
-            console.log(res.body);
-            this.selectedCountry = res.body;
+             this.selectedCountry = res.body[0];
+             this.currencyCode = res.body[0].currencies[0].code;
         })
          .catch( function(error) {
             console.log('Error: ', error);
         })
-    }
+    },
+    
 }
 </script>
 
@@ -77,6 +113,12 @@ export default {
     .content
         display: flex
         flex-wrap: wrap
-
-
+    .lang
+        display: flex
+        flex-wrap: wrap
+        padding-left: 1rem
+    .borders
+        display: flex
+        flex-wrap: wrap    
+        padding-left: 1rem
 </style>
