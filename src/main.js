@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
-import Countries from './components/Countries'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import SelectedCountry from './components/SelectedCountry.vue'
+import Countries from './components/Countries.vue'
 
 Vue.use(VueResource)
 Vue.use(VueRouter);
 
 const routes = [
-  {path: './', component: App},
-  {path: './countries', component: Countries},
+  {path: '/', component: Countries},
+  {path: '/country/:countryId', name: '/country/countryId', component: SelectedCountry} 
 ];
 const router = new VueRouter({
   routes,

@@ -20,5 +20,7 @@ export default {
         background-color: rgb(43, 57, 69) !important
         display: flex
         justify-content: space-between
+        padding: 0 7rem
+        align-items: center
 
 </style>
