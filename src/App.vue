@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Header title="Where in the World?"/>
-    <!-- <Countries/> -->
     <router-view></router-view>  
   </div>
 </template>
@@ -9,12 +8,10 @@
 <script>
 
 import Header from './components/Header';
-// import Countries from './components/Countries'
 
 export default {
   name: 'App',
   components: {
-    // Countries,
     Header
   }
 }

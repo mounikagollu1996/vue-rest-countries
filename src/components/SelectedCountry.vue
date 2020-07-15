@@ -1,40 +1,40 @@
 <template>
-<div class="container">    
-            <div class="column-main">
-                <div class="image-box">
-                    <img :src="selectedCountry.flag" alt="country flag"/>
-                </div>
-                <div class="description">
-                    <div class="content">
-                        <div class="wrapper">
-                            <h4>{{selectedCountry.name}}</h4>
-                            <p class="">Native Name: {{selectedCountry.nativeName}}</p>
-                            <p class="">Population: {{selectedCountry.population}}</p>
-                            <p class="">Region: {{selectedCountry.region}}</p>
-                            <p class="">Sub Region: {{selectedCountry.subRegion}}</p>
-                            <p class="">Capital: {{selectedCountry.capital}}</p>
-                        </div>
-                        <div class="">
-                            <p class="">Top Level Domain: {{selectedCountry.topLevelDomain}}</p>
-                            <p class="">Currencies: {{currencyCode}}</p>
-                            <div class="lang">
-                                Languages: 
-                                <p v-for="lang in selectedCountry.languages" :key="lang.name">
-                                 {{lang.name}}
+    <div class="container">    
+        <div class="column-main">
+            <div class="image-box">
+                <img :src="selectedCountry.flag" alt="country flag"/>
+            </div>
+            <div class="description">
+                <div class="content">
+                    <div class="wrapper">
+                        <h4>{{selectedCountry.name}}</h4>
+                        <p class="">Native Name: {{selectedCountry.nativeName}}</p>
+                        <p class="">Population: {{selectedCountry.population}}</p>
+                        <p class="">Region: {{selectedCountry.region}}</p>
+                        <p class="">Sub Region: {{selectedCountry.subRegion}}</p>
+                        <p class="">Capital: {{selectedCountry.capital}}</p>
+                    </div>
+                    <div class="">
+                        <p class="">Top Level Domain: {{selectedCountry.topLevelDomain}}</p>
+                        <p class="">Currencies: {{currencyCode}}</p>
+                        <div class="lang">
+                            Languages: 
+                            <p v-for="lang in selectedCountry.languages" :key="lang.name">
+                                {{lang.name}}
                             </p>
-                            </div>
-                            <div class="borders">
-                                <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
-                                    <router-link :to="{name: '/country/countryId', params: {countryId: borderCountry}}">
-                                        {{border}}
-                                    </router-link> 
-                                </button>
-                            </div>
+                        </div>
+                        <div class="borders">
+                            <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
+                                <router-link :to="{name: '/country/countryId', params: {countryId: borderCountry}}">
+                                    {{border}}
+                                </router-link> 
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>      
+        </div>
+    </div>      
 </template>
 
 
