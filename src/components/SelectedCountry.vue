@@ -1,7 +1,7 @@
 <template>
     <div class="main-class"> 
         <router-link to="/">
-            <button v-bind:class="{backMode: isMode}" class="back-button">Back</button>   
+            <button class="back-button">Back</button>   
         </router-link>
         <div class="column-main">
             <div class="image-box">
@@ -28,12 +28,12 @@
                         </div>   
                     </div>
                     <div class="borders">
-                            <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
-                                <router-link :to="{name: '/country/countryId', params: {countryId: borderCountry}}">
-                                    {{border}}
-                                </router-link> 
-                            </button>
-                        </div>
+                        <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
+                            <router-link :to="{name:'/country/countryId', params: {countryId: borderCountry}}">
+                                {{border}}
+                            </router-link> 
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -56,8 +56,8 @@ export default {
 
     created() {
         bus.$on('toggle', (data) => {
-            var _recent = this;
-            _recent.isMode = data;
+            var _here = this;
+            _here.isMode = data;
         });
     },
     methods: {
@@ -73,9 +73,8 @@ export default {
                        _this.borderCountry = country.name
                    }
                })
-               console.log(this.borderCountry);
            })
-       }
+       },
     },
 
     mounted() {
@@ -145,8 +144,7 @@ export default {
         position: relative
         top: 5rem
         left: 5rem  
-    .borders
-        
+    .borders   
         button
             background: #2B3945
             border: 1px solid #2B3945
@@ -154,9 +152,5 @@ export default {
             margin: 1rem 0 0 1rem
             a
                 color: white
-                text-decoration: none  
-    .backMode
-        background: #ffffff
-        border: 1px solid #ffffff
-        color: black                 
+                text-decoration: none                  
 </style>

@@ -5,13 +5,13 @@
             aria-label="Search"/>
 
         <div class="main-wrapper">
-            <div v-bind:class="{background: isMode}" class="country-wrapper" v-for="country in resultQuery" :key="country.name">
+            <div class="country-wrapper" v-for="country in resultQuery" :key="country.name">
                 <router-link :to="{name: '/country/countryId', params: {countryId: country.name}}">
                     <img class="flag" :src="country.flag">
-                    <h4 v-bind:class="{background: isMode}">{{ country.name}}</h4>
-                    <p v-bind:class="{background: isMode}">Population: {{ country.population }}</p>
-                    <p v-bind:class="{background: isMode}">Region: {{ country.region }}</p>
-                    <p v-bind:class="{background: isMode}">Capital: {{country.capital}}</p>
+                    <h4>{{ country.name}}</h4>
+                    <p>Population: {{ country.population }}</p>
+                    <p>Region: {{ country.region }}</p>
+                    <p>Capital: {{country.capital}}</p>
                  </router-link>
             </div>
         </div>  
@@ -162,23 +162,6 @@ export default {
         background: #f8f8f8   
     .background
         background: #ffffff
-        color: black    
-    .searchMode
-        background: #ffffff
-        border: 1px solid white  
-    .searchMode::placeholder
-        color: black
-    .filterMode
-        .vs__dropdown-toggle
-            background: #ffffff  
-        .vs__search  
-            border: none  
-        .vs__search::placeholder
-            color: black     
-        .vs__dropdown-menu
-            background: #ffffff
-            color: black
-        .vs__selected
-            color: black    
+        color: black        
           
 </style>
