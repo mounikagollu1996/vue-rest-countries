@@ -1,14 +1,17 @@
 <template>
-    <div class="container">
-        <v-select :value="selected" @input="setSelected" placeholder="Filter by region" :options="options"></v-select>
+    <div class="main-column" v-bind:class="{white: isMode}">
+        <v-select v-bind:class="{filterMode: isMode}" :value="selected" @input="setSelected" placeholder="Filter by region" :options="options"></v-select>
+        <input v-bind:class="{searchMode: isMode}" v-model="searchQuery" class="form-control" type="text" placeholder="Search for a country..."
+            aria-label="Search"/>
+
         <div class="main-wrapper">
-            <div class="country-wrapper" v-for="country in countries" :key="country.name">
+            <div v-bind:class="{background: isMode}" class="country-wrapper" v-for="country in resultQuery" :key="country.name">
                 <router-link :to="{name: '/country/countryId', params: {countryId: country.name}}">
                     <img class="flag" :src="country.flag">
-                    <h4>{{ country.name}}</h4>
-                    <p>Population: {{ country.population }}</p>
-                    <p>Region: {{ country.region }}</p>
-                    <p>Capital: {{country.capital}}</p>
+                    <h4 v-bind:class="{background: isMode}">{{ country.name}}</h4>
+                    <p v-bind:class="{background: isMode}">Population: {{ country.population }}</p>
+                    <p v-bind:class="{background: isMode}">Region: {{ country.region }}</p>
+                    <p v-bind:class="{background: isMode}">Capital: {{country.capital}}</p>
                  </router-link>
             </div>
         </div>  
@@ -16,14 +19,44 @@
 </template>
 
 <script>
+import {bus} from '../main.js';
 export default {
     name: 'Countries',
     data() {
         return {
             countries: [],
-            options: ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania','Polar']
+            options: ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania','Polar'],
+            searchQuery: null,
+            isMode: false
         }
     },
+
+    created() {
+        bus.$on('toggle', (data) => {
+            var _recent = this;
+            _recent.isMode = data;
+        });
+    },
+
+    computed: {
+        resultQuery() {
+            if(this.searchQuery){
+                
+                return this.countries.filter(country => {
+                    let name = country.name.toLowerCase();
+                    let text = this.searchQuery.toLowerCase();
+                    if(name.search(text) > -1){
+                        return country;
+                    }
+                })
+            }
+            else {
+                return this.countries;
+            }
+            
+        }
+    },
+
     methods: {
         setSelected(value) {
             var _this = this;
@@ -35,10 +68,9 @@ export default {
             .then(function(res) {
                 _this.countries = res.body;
             })
-        }
+        },
     },
-
-    mounted() {
+        mounted() {
         this.$http.get('https://restcountries.eu/rest/v2/all')
         .then( function(res) {
             this.countries = res.body;
@@ -52,8 +84,7 @@ export default {
 </script>
 
 <style lang="sass">
-    .container
-        background: rgb(32, 44, 55)
+    .main-column
         height: 100%
     .main-wrapper
         display: flex
@@ -89,16 +120,24 @@ export default {
         display: flex
         float: right
         margin: 2rem 7rem 0 0
+        background: #2b3945
+        border-radius: 9px
     .vs__search
         background: none 
         height: 35px 
+        border: 1px solid #2b3945
+        border: 1px solid #2b3945
+    .vs__search::placeholder
+        color: #ffffff
+        font-size: 16px    
     .v-select
         position: absolute
         right: 0
     .vs__dropdown-menu
         list-style-type: none
-        background: #ffffff
-        color: black
+        background: #2b3945
+        border-radius: 9px
+        color: #fffffff
         margin: 4rem 0 0 4.5rem   
         width: 110px 
     .vs__selected
@@ -107,5 +146,39 @@ export default {
     .vs__actions
         position: relative
         right: 1.5rem
-        top: 0.5rem          
+        top: 0.5rem 
+    .form-control
+        background: #2b3945
+        border: 1px solid #2b3945
+        border-radius: 8px
+        padding: 0.8rem 1rem
+        margin: 2rem 0 0 7rem
+        width: 30%    
+        color: #ffffff  
+    .form-control::placeholder
+        color: #ffffff  
+        font-size: 16px 
+    .white
+        background: #f8f8f8   
+    .background
+        background: #ffffff
+        color: black    
+    .searchMode
+        background: #ffffff
+        border: 1px solid white  
+    .searchMode::placeholder
+        color: black
+    .filterMode
+        .vs__dropdown-toggle
+            background: #ffffff  
+        .vs__search  
+            border: none  
+        .vs__search::placeholder
+            color: black     
+        .vs__dropdown-menu
+            background: #ffffff
+            color: black
+        .vs__selected
+            color: black    
+          
 </style>

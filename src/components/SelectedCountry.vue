@@ -1,5 +1,8 @@
 <template>
-    <div class="container">    
+    <div class="main-class"> 
+        <router-link to="/">
+            <button v-bind:class="{backMode: isMode}" class="back-button">Back</button>   
+        </router-link>
         <div class="column-main">
             <div class="image-box">
                 <img :src="selectedCountry.flag" alt="country flag"/>
@@ -11,7 +14,7 @@
                         <p class="">Native Name: {{selectedCountry.nativeName}}</p>
                         <p class="">Population: {{selectedCountry.population}}</p>
                         <p class="">Region: {{selectedCountry.region}}</p>
-                        <p class="">Sub Region: {{selectedCountry.subRegion}}</p>
+                        <p class="">Sub Region: {{selectedCountry.subregion}}</p>
                         <p class="">Capital: {{selectedCountry.capital}}</p>
                     </div>
                     <div class="">
@@ -22,15 +25,15 @@
                             <p v-for="lang in selectedCountry.languages" :key="lang.name">
                                 {{lang.name}}
                             </p>
-                        </div>
-                        <div class="borders">
+                        </div>   
+                    </div>
+                    <div class="borders">
                             <button v-on:click="updateCountry(border)" v-for="border in selectedCountry.borders" :key="border">  
                                 <router-link :to="{name: '/country/countryId', params: {countryId: borderCountry}}">
                                     {{border}}
                                 </router-link> 
                             </button>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -39,16 +42,24 @@
 
 
 <script>
+import {bus} from '../main.js';
 export default {
     data() {
         return {
             countryId: this.$route.params.countryId,
             selectedCountry: [],
             currencyCode: '',
-            borderCountry: ''
+            borderCountry: '',
+            isMode: false
         }
     },
-    
+
+    created() {
+        bus.$on('toggle', (data) => {
+            var _recent = this;
+            _recent.isMode = data;
+        });
+    },
     methods: {
        updateCountry(border) {
            var _this = this;
@@ -90,7 +101,10 @@ export default {
 <style lang="sass">
     .container
         background: rgb(32, 44, 55) 
-        height: 760px
+    .main-class
+        
+    .white
+        background: #f8f8f8      
     .column-main
         display: flex
         justify-content: space-between
@@ -121,4 +135,28 @@ export default {
         display: flex
         flex-wrap: wrap    
         padding-left: 1rem
+    .back-button
+        width: 100px
+        height: 40px
+        background: #2b3945
+        border: 1px solid #2b3945
+        color: white
+        font-size: 16px  
+        position: relative
+        top: 5rem
+        left: 5rem  
+    .borders
+        
+        button
+            background: #2B3945
+            border: 1px solid #2B3945
+            padding: 1rem 2rem
+            margin: 1rem 0 0 1rem
+            a
+                color: white
+                text-decoration: none  
+    .backMode
+        background: #ffffff
+        border: 1px solid #ffffff
+        color: black                 
 </style>

@@ -5,6 +5,9 @@ import VueResource from 'vue-resource'
 import vSelect from "vue-select"
 import SelectedCountry from './components/SelectedCountry.vue'
 import Countries from './components/Countries.vue'
+import "font-awesome/css/font-awesome.min.css";
+
+export const bus = new Vue();
 
 Vue.use(VueResource)
 Vue.use(VueRouter);
